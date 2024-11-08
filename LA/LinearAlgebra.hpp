@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <pthread.h>
+#include <vector>
 
 extern "C" {
     void simpleSumFortran(double* x, double* y);
@@ -21,22 +22,23 @@ extern "C" {
 
 //Linear Algebra Lib
 namespace lal{
-  double** ConvertToMatrix(double* linearArray, int size); //Convert to private
-
-  double** MatrixSum(double** A, double** B, int size); //Make it for all types of matrix
-
-  double SimpleSum(double x, double y);
-
-  double innerProduct(double* x, double* y, int size);
   class Matrix
-  {
+  { 
     public:
-      
+      void printMatrix();
     public:
-      //Matrix(double* x, double* y); //Constructor
+      Matrix(double** matrix, int row, int cols); //Constructor
+      //double** getMatrix(); //To get in the matrix format
+      //Matrix(std::vector<std::vector<double>> vec); //Constructor
+      double* operator[](int row);
+      double* operator+(Matrix A, Matrix B); //Implementar a some duas matrizes
+      double* operator-(Matrix A, Matrix B); //Implementar a subtração
+      double* operator*(Matrix A, Matrix B); //Implementar a multiplicação, como ela é;
+      ~Matrix();
       
-    private:
-      //int ratio;
+    private:      
+      double* arrayMatrix;
+      int rows, cols;
   };
 
   /*
@@ -53,6 +55,14 @@ namespace lal{
     private:
       //int ratio;
   };
+  
+  double** ConvertToMatrix(double* linearArray, int size);
+
+  double** MatrixSum(double** A, double** B, int size); //Make it for all types of matrix
+
+  double SimpleSum(double x, double y);
+
+  double innerProduct(double* x, double* y, int size);
 }
 
 
