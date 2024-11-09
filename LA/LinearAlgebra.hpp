@@ -31,9 +31,9 @@ namespace lal{
       //double** getMatrix(); //To get in the matrix format
       //Matrix(std::vector<std::vector<double>> vec); //Constructor
       double* operator[](int row);
-      double* operator+(Matrix A, Matrix B); //Implementar a some duas matrizes
-      double* operator-(Matrix A, Matrix B); //Implementar a subtração
-      double* operator*(Matrix A, Matrix B); //Implementar a multiplicação, como ela é;
+      //double* operator+(Matrix A, Matrix B); //Implementar a some duas matrizes
+      //double* operator-(Matrix A, Matrix B); //Implementar a subtração
+      //double* operator*(Matrix A, Matrix B); //Implementar a multiplicação, como ela é;
       ~Matrix();
       
     private:      
