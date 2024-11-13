@@ -25,5 +25,13 @@ The linear algebra is done in two parts, the API written in C++ and the implemen
 # Test Cases
 The test cases will be done with the books: "Deep Learning With Python, François Chollet" and "Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, Aurélien Géron"
 
+# Third Party libs
+We are using a third party lib for use pthreads in fortran
+https://github.com/interkosmos/fortran-unix/tree/master
+
 # Plotting
 For plotting, this lib will use the ROOT library, from CERN, https://root.cern/
+
+# Useful References
+- https://dafriedman97.github.io/mlbook/content/c1/construction.html
+- https://github.com/eriklindernoren/ML-From-Scratch?tab=readme-ov-file#about
