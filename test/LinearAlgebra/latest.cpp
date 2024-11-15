@@ -63,18 +63,6 @@ int main() {
   std::cout << "--------------------\n";
   std::cout << "\n";
 
-  double** res_m = lal::MatrixSum(x_m, y_m, SIZE);
-  
-  for(int i = 0; i < SIZE; i++) {
-    for(int j = 0; j < SIZE; j++) {
-      std::cout<< res_m[i][j] << " ";
-    }
-    std::cout << "\n";
-  }
-
-  res = lal::innerProduct(x_, y_, SIZE);
-  std::cout << "Produto interno: " << res << "\n";
-
   free(x_);
   free(y_);
 
