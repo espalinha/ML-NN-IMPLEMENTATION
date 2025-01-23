@@ -9,7 +9,7 @@ CXXFLAGS = -Wall -std=c++11
 TARGET_LIB = liblinalg.a
 
 # Arquivos fonte
-SRCS_CPP = LinearAlgebra.cpp
+SRCS_CPP = LinearAlgebra.cpp matrix.cpp
 
 # Arquivos objeto
 OBJS_CPP = $(SRCS_CPP:.cpp=.o)
