@@ -34,4 +34,5 @@
 StandartC++DIR
 fortran-unix
 libfortran-unix.a
-
+external
+test

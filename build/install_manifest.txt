@@ -1,0 +1,2 @@
+/usr/local/lib/liblinalg.so
+/usr/local/include/LinearAlgebra.hpp

@@ -1,0 +1,7 @@
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/linalg.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/edit_cache.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/rebuild_cache.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/list_install_components.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/install.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/install/local.dir
+/home/espala/Exercicios/ML-NN-IMPLEMENTATION/build/CMakeFiles/install/strip.dir

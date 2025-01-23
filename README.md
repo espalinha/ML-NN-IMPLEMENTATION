@@ -20,8 +20,8 @@ And it will have the mathematical and theoretical support of the book: "Deep Lea
 # Linear Algebra
 We will make a C++ linear algebra library, to do this we will use the book: "Fundamentals of Matrix Computations, second Edition, David S. Walkins".
 
-The linear algebra is done in two parts, the API written in C++ and the implementation written in Fortran 90 and CUDA.
-
+We will use the youtube playlist by QuantitativeBytes: https://www.youtube.com/playlist?list=PL3WoIG-PLjSv9vFx2dg0BqzDZH_6qzF8-
+And we will use the site: https://johnfoster.pge.utexas.edu/numerical-methods-book/PythonIntro.html 
 # Test Cases
 The test cases will be done with the books: "Deep Learning With Python, François Chollet" and "Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, Aurélien Géron"
 
