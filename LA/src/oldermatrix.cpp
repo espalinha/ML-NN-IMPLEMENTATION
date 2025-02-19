@@ -3,7 +3,6 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <random>
 #include <exception>
 #include <stdexcept>
 #include <vector>
@@ -66,7 +65,7 @@ Matrix<T>::Matrix(std::vector<std::vector<T>> vec)
   }
 }
 /*
-float** Matrix::getMatrix(){
+double** Matrix::getMatrix(){
   return lal::ConvertToMatrix(arrayMatrix, rows*cols);
 }
 */
@@ -210,7 +209,7 @@ Matrix<T> Matrix<T>::operator+(Matrix<T> m)
   return Matrix<T>(ans, this->rows, m.cols);
 }
 template <class T>
-Matrix<T> Matrix<T>::operator/(float factor)
+Matrix<T> Matrix<T>::operator/(double factor)
 {
   if (factor == 0)
     throw std::invalid_argument("division by 0");
@@ -289,9 +288,9 @@ Matrix<T> Matrix<T>::operator-(Matrix<T> m)
   return Matrix<T>(ans, this->rows, m.cols);
 }
 
-Matrix<float> zeros(int row, int col)
+Matrix<double> zeros(int row, int col)
 {
-  float *ans = new float[row * col]();
+  double *ans = new double[row * col]();
   for (int i = 0; i < row; i++)
   {
     for (int k = 0; k < col; k++)
@@ -299,13 +298,13 @@ Matrix<float> zeros(int row, int col)
       ans[i * col + k] = 0.;
     }
   }
-  return sla::Matrix<float>(ans, row, col);
+  return sla::Matrix<double>(ans, row, col);
 }
 template <class T>
-Matrix<float> zeros(Matrix<T> x)
+Matrix<double> zeros(Matrix<T> x)
 {
 
-  float *ans = new float[x.rows * x.cols];
+  double *ans = new double[x.rows * x.cols];
   for (int i = 0; i < x.rows; i++)
   {
     for (int j = 0; j < x.cols; j++)
@@ -315,35 +314,6 @@ Matrix<float> zeros(Matrix<T> x)
   }
   return Matrix<T>(ans, x.rows, x.cols);
 }
-
-Matrix<float> ones(int row, int col)
-{
-  float *ans = new float[row * col]();
-  for (int i = 0; i < row; i++)
-  {
-    for (int k = 0; k < col; k++)
-    {
-      ans[i * col + k] = 1.;
-    }
-  }
-  return sla::Matrix<float>(ans, row, col);
-}
-template <class T>
-Matrix<float> ones(Matrix<T> x)
-{
-
-  float *ans = new float[x.rows * x.cols];
-  for (int i = 0; i < x.rows; i++)
-  {
-    for (int j = 0; j < x.cols; j++)
-    {
-      ans[i * x.cols + j] = 1.;
-    }
-  }
-  return Matrix<T>(ans, x.rows, x.cols);
-}
-
-
 
 template <class T>
 Matrix<T> underRow(int row, T *arr, int row_size, int col_size)
@@ -382,25 +352,25 @@ Matrix<T> Matrix<T>::copy()
   return Matrix<T>(ans, row, col);
 }
 template <class T>
-Matrix<float> Matrix<T>::copy_()
+Matrix<double> Matrix<T>::copy_()
 {
-  float *ans = new float[this->rows * this->cols]();
+  double *ans = new double[this->rows * this->cols]();
   for (int i = 0; i < this->rows; i++)
   {
     for (int j = 0; j < this->cols; j++)
     {
-      ans[i * this->cols + j] = (float)(this->arrayMatrix[i * this->cols + j]);
+      ans[i * this->cols + j] = (double)(this->arrayMatrix[i * this->cols + j]);
     }
   }
-  return Matrix<float>(ans, this->rows, this->cols);
+  return Matrix<double>(ans, this->rows, this->cols);
 }
 template <class T>
-Matrix<float> Matrix<T>::I()
+Matrix<double> Matrix<T>::I()
 {
   if (this->rows != this->cols)
     throw std::invalid_argument("Matrix is not square");
   int num = this->rows;
-  float ans[num * num];
+  double ans[num * num];
   for (int i = 0; i < num; i++)
   {
     for (int j = 0; j < num; j++)
@@ -411,16 +381,16 @@ Matrix<float> Matrix<T>::I()
         ans[i * num + j] = 0.0;
     }
   }
-  return Matrix<float>(ans, num, num);
+  return Matrix<double>(ans, num, num);
 }
 
 template <class T>
-Matrix<float> inv(Matrix<T> A)
+Matrix<double> inv(Matrix<T> A)
 {
   int row = A.rows;
   if (row == 2)
   {
-    float det = sla::det(A);
+    double det = sla::det(A);
     if (det != 0)
     {
       auto res = sla::zeros(2, 2);
@@ -433,9 +403,9 @@ Matrix<float> inv(Matrix<T> A)
     else
       throw std::invalid_argument("Matrix is singular");
   }
-  Matrix<float> b = sla::I(row);
+  Matrix<double> b = sla::I(row);
 
-  Matrix<float> invers = sla::zeros(A.rows, A.cols);
+  Matrix<double> invers = sla::zeros(A.rows, A.cols);
   for (int i = 0; i < row; i++)
   {
     auto b_slice = b.getCol(i, 0);
@@ -450,10 +420,7 @@ Matrix<float> inv(Matrix<T> A)
 
 template <class T>
 Matrix<T> solve(Matrix<T> A, Matrix<T> b)
-{ 
-  /*
-   * Solve Ax=b
-   * */
+{
   auto x = luDecomp(A);
   auto b_perm = x.P * b;
   Matrix<T> y = sla::forward_substitution(x.L, b_perm);
@@ -486,7 +453,7 @@ Matrix<T> back_substitution(Matrix<T> U, Matrix<T> y)
   x(row - 1) = y(row - 1) / U[row - 1][row - 1];
   for (int i = row - 2; i > -1; i--)
   {
-    float sum = 0;
+    double sum = 0;
     for (int k = i; k < row; k++)
     {
       sum += U[i][k] * x(k);
@@ -537,7 +504,7 @@ Matrix<T> cholesky(Matrix<T> A)
   Matrix<T> L = sla::zeros(A);
   for (int i = 0; i < row; i++)
   {
-    float sum = 0;
+    double sum = 0;
     Matrix<T> temp = A.getRow(i, 0);
     for (int k = 0; k < row; k++)
     {
@@ -558,9 +525,9 @@ Matrix<T> cholesky(Matrix<T> A)
   }
   return L;
 }
-Matrix<float> I(int num)
+Matrix<double> I(int num)
 {
-  float ans[num * num];
+  double ans[num * num];
   for (int i = 0; i < num; i++)
   {
     for (int j = 0; j < num; j++)
@@ -571,13 +538,13 @@ Matrix<float> I(int num)
         ans[i * num + j] = 0.0;
     }
   }
-  return Matrix<float>(ans, num, num);
+  return Matrix<double>(ans, num, num);
 }
 
 template <class T>
-bool isclose(T x, float y)
+bool isclose(T x, double y)
 {
-  float val = std::abs(x - y);
+  double val = std::abs(x - y);
   if (val < 1e-8)
     return true;
   return false;
@@ -620,9 +587,9 @@ PLU luDecomp_for_det(Matrix<T> m)
   auto P_ = sla::zeros(1, 1);
   P_(0) = number_perm;
   return (PLU){P_, L, U};
-} 
+}
 template <class T>
-float det(Matrix<T> A)
+double det(Matrix<T> A)
 {
   int row = A.rows;
   if (row == 2)
@@ -630,7 +597,7 @@ float det(Matrix<T> A)
     return A[0][0] * A[1][1] - A[0][1] * A[1][0];
   }
   PLU lu = luDecomp_for_det(A);
-  float det_res = 1;
+  double det_res = 1;
   for (int i = 0; i < row; i++)
   {
     det_res *= lu.U[i][i];
@@ -644,15 +611,15 @@ template<class T>
 QR qr_decomp(Matrix<T> A) {
   int row = A.rows;
   int col = A.cols;
-  Matrix<float> Q = sla::zeros(row, row);
-  Matrix<float> u = sla::zeros(row, row);
-  Matrix<float> R = sla::zeros(row, col);
+  Matrix<double> Q = sla::zeros(row, row);
+  Matrix<double> u = sla::zeros(row, row);
+  Matrix<double> R = sla::zeros(row, col);
 
 
   for(int p = 0; p < row; p++) {
     u[p][0] = A[p][0];
   }
-  float norm = sla::normVec(u.getCol(0, 0));
+  double norm = sla::normVec(u.getCol(0, 0));
   for(int p = 0; p < row; p++) {
     Q[p][0] = u[p][0]/norm;
   }
@@ -661,7 +628,7 @@ QR qr_decomp(Matrix<T> A) {
       u[p][i] = A[p][i];
     }
     for(int j = 0; j < row; j++) {
-      float scalar = 0;
+      double scalar = 0;
       for(int p = 0; p < row; p++) {
         scalar += A[p][i]*Q[p][j];
       }    
@@ -676,7 +643,7 @@ QR qr_decomp(Matrix<T> A) {
 
   for(int i = 0; i < row; i++) {
     for(int j = i; j < col; j++) {
-      float scalar = 0;
+      double scalar = 0;
       for(int p = 0; p < row; p++) {
         scalar += A[p][j]*Q[p][i];
       }    
@@ -692,7 +659,7 @@ QR qr_decomp(Matrix<T> A) {
 template<class T>
 QR qr(Matrix<T> A) {
   QR qr__ = sla::qr_decomp(A);
-  Matrix<float> D = sla::zeros(A.rows, A.rows);
+  Matrix<double> D = sla::zeros(A.rows, A.rows);
   for(int i = 0; i < A.rows; i++) {
     if(qr__.Q[i][i] < 0) D[i][i] = -1;
     else if(qr__.Q[i][i] == 0) D[i][i] = 0;
@@ -703,159 +670,18 @@ QR qr(Matrix<T> A) {
   
     return (QR){qr__.Q, qr__.R};
 }
-
-
-/*
- * 
-
-"Inverse iteration method to find the eigen vector corresponding to a given eigen value."
-function inverseIteration(A, val, maxiter=20, userandomstart=true)
-    mu_I = val * eye(A)
-    inv_A_minus_muI = inv(A - mu_I)
-    n = size(A)[1]
-    if userandomstart
-        X = randn((n, 1))
-    else
-        X = ones((n, 1))
-    end
-    for i = 1:maxiter
-        next_X = inv_A_minus_muI * X
-        X = next_X / norm(next_X)
-    end
-    X
-end
-
-
-font: https://perso.crans.org/besson/publis/notebooks/Algorithms_to_compute_eigen_values_and_eigen_vectors_in_Julia.html#:~:text=0.525322;%200.818673%5D)-,QR%20algorithm,on%20the%20Gram%2DSchmidt%20process
-
- * */
-
 template<class T>
-Matrix<float> eigvector(Matrix<T> A, float eigval, float tolerance, int maxinter) {
-  auto x = sla::zeros(A.rows, 1);
-  auto B = A - A.I()*eigval;
-
-  auto inv = sla::inv(B);
-  //inv.printMatrix();
-  unsigned seed = 2909;
-  std::default_random_engine e(seed);
-  
-  std::normal_distribution<double> distN(0, 1);
-
-  for(int j = 0; j < A.rows; j++) {
-    x(j) = distN(e);
-  }
-  for (int itter = 0; itter < maxinter; itter++) {
-    auto next_x = inv*x;
-    //next_x.printMatrix();
-    //std::cout << "\n";
-    x = next_x/sla::normVec(next_x);
-    //x.printMatrix();
-  }
-  return x;
-}
-
-
-//font: https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/
-void swap(Matrix<float> a, int i, int j)
-{
-    int temp = a(i);
-    a(i) = a(j);
-    a(j) = temp;
-}
-
-void partition(Matrix<float> a, int l, int r, int& i, int& j)
-{
-    i = l - 1, j = r;
-    int p = l - 1, q = r;
-    int v = a(r);
- 
-    while (true) {
-        // From left, find the first element greater than
-        // or equal to v. This loop will definitely
-        // terminate as v is last element
-        while (a(++i) < v);
- 
-        // From right, find the first element smaller than
-        // or equal to v
-        while (v < a(--j))
-            if (j == l)
-                break;
- 
-        // If i and j cross, then we are done
-        if (i >= j)
-            break;
- 
-        // Swap, so that smaller goes on left greater goes
-        // on right
-        swap(a,i,j);
- 
-        // Move all same left occurrence of pivot to
-        // beginning of array and keep count using p
-        if (a(i) == v) {
-            p++;
-            swap(a,p,i);
-        }
- 
-        // Move all same right occurrence of pivot to end of
-        // array and keep count using q
-        if (a(j) == v) {
-            q--;
-            swap(a,j,q);
-        }
-    }
- 
-    // Move pivot element to its correct index
-    swap(a,i,r);
- 
-    // Move all left same occurrences from beginning
-    // to adjacent to arr[i]
-    j = i - 1;
-    for (int k = l; k < p; k++, j--)
-        swap(a,k,j);
- 
-    // Move all right same occurrences from end
-    // to adjacent to arr[i]
-    i = i + 1;
-    for (int k = r - 1; k > q; k--, i++)
-        swap(a,i, k);
-}
- 
-// 3-way partition based quick sort
-void quicksort(Matrix<float> a, int l, int r)
-{
-    
-    if (r <= l)
-        return;
- 
-    int i, j;
- 
-    // Note that i and j are passed as reference
-    partition(a, l, r, i, j);
- 
-    // Recur
-    quicksort(a, l, j);
-    quicksort(a, i, r);
-}
-
-void inverse_vec(Matrix<float> A) {
-  for(int i = 0; i < A.cols/2; i++) {
-    swap(A, i, A.cols - i - 1);
-  }
-}
-
-template<class T>
-EIG eig(Matrix<T> A, float tolerance, int maxinter) {
+Matrix<double> eig(Matrix<T> A, double tolerance, int maxinter) {
   auto A_old = A.copy_();
   auto A_new = A.copy_();
-  float diff = INFINITY;
+  double diff = INFINITY;
   int i = 0;
   while (diff > tolerance && i < maxinter) {
     A_old = A_new.copy_();
     QR qr = sla::qr_decomp(A_old);
     A_new = qr.R*qr.Q;
 
-    float max = DBL_MIN;
+    double max = DBL_MIN;
     for(int j = 0; j < A.rows; j++) {
       for(int k = 0; k < A.cols; k++) {
         auto temp = A_new[j][k] - A_old[j][k];
@@ -866,115 +692,59 @@ EIG eig(Matrix<T> A, float tolerance, int maxinter) {
     i++;
   }
 
-  Matrix<float> eigs = sla::zeros(1, A.cols);
+  Matrix<double> eigs = sla::zeros(1, A.cols);
   for(int i = 0; i < A.rows; i++) {
     eigs(i) = A_new[i][i];
   }
-  
-  sla::quicksort(eigs, 0, eigs.cols-1);
-  sla::inverse_vec(eigs);
-  Matrix<float> eigvecs = sla::zeros(A.rows, A.cols);
-  for(int i = 0; i < A.cols; i++) {
-    auto x = sla::eigvector(A, eigs(i), tolerance, maxinter);
-    for(int j = 0; j < A.cols;j++) {
-      eigvecs[i][j] = x(j);
-    }
-  }
-
-
-  return (EIG) {eigs, eigvecs.transpose()};
+  return eigs;
 
   
 }
 
 template<class T>
-float normVec(Matrix<T> A) {
- float norm = 0;
+double normVec(Matrix<T> A) {
+ double norm = 0;
   for(int i = 0; i < A.cols*A.rows; i++) {
     norm += A(i)*A(i);
   }
   
   return std::sqrt(norm);
 }
-template<class T>
-Matrix<float> concatenate(Matrix<T> A, Matrix<T> B) {
-  if(A.rows != B.rows && A.cols != B.cols) {
-    throw std::invalid_argument("A and B needs to have, at least, one equal dimension");
-  }
-  
-  Matrix<float> new_matrix = sla::zeros(1, 1);
 
-  if(A.rows == B.rows) {
-    new_matrix = sla::zeros(A.rows, (A.cols + B.cols));
-    int col = 0;
-    for(int i = 0; i < A.rows; i++) {
-      for(int j = 0; j < A.cols; j++) {
-        new_matrix[i][j] = A[i][j];
-      }
-    }
-    for(int i = 0; i < A.rows;i++) {
-      for(int j = A.cols; j < A.cols + B.cols; j++) {
-        new_matrix[i][j] = B[i][j - A.cols];
-      }
-    }
-  }
-
-  else {
-    new_matrix = sla::zeros(A.rows + B.rows, A.cols);
-    int col = 0;
-    for(int i = 0; i < A.rows; i++) {
-      for(int j = 0; j < A.cols; j++) {
-        new_matrix[i][j] = A[i][j];
-      }
-    }
-    for(int i = A.rows; i < A.rows + B.rows;i++) {
-      for(int j = 0; j < B.cols; j++) {
-        new_matrix[i][j] = B[i - A.rows][j];
-      }
-    }
-  }
-
-  return new_matrix;
-}
 
 
 }
-
 
 template class sla::Matrix<int>;
+template class sla::Matrix<double>;
 template class sla::Matrix<float>;
 template class sla::Matrix<long>;
 template class sla::Matrix<short>;
 template class sla::Matrix<size_t>;
 template class sla::Matrix<uint8_t>;
-template class sla::PLU sla::luDecomp<float>(sla::Matrix<float>);
-template class sla::Matrix<float> sla::solve<float>(sla::Matrix<float>, sla::Matrix<float>);
-template class sla::Matrix<float> sla::cholesky<float>(sla::Matrix<float>);
+template class sla::PLU sla::luDecomp<double>(sla::Matrix<double>);
+template class sla::Matrix<double> sla::solve<double>(sla::Matrix<double>, sla::Matrix<double>);
+template class sla::Matrix<double> sla::cholesky<double>(sla::Matrix<double>);
 template <class T>
-bool sla::isclose(T, float);
+bool sla::isclose(T, double);
 template <class T>
-sla::Matrix<float> sla::zeros(Matrix<T>);
+sla::Matrix<double> sla::zeros(Matrix<T>);
 template <class T>
-sla::Matrix<float> sla::ones(Matrix<T>);
-
-template <class T>
-sla::Matrix<float> sla::inv(Matrix<T>);
-template class sla::Matrix<float> sla::inv<float>(sla::Matrix<float>);
-template float sla::det<float>(Matrix<float>);
-template float sla::normVec<float>(Matrix<float>);
-template sla::QR sla::qr<float>(Matrix<float>);
-template sla::EIG sla::eig<float>(Matrix<float>, float, int);
-template sla::Matrix<float> sla::concatenate<float>(Matrix<float>, Matrix<float>);
-
+sla::Matrix<double> sla::inv(Matrix<T>);
+template class sla::Matrix<double> sla::inv<double>(sla::Matrix<double>);
+template double sla::det<double>(Matrix<double>);
+template double sla::normVec<double>(Matrix<double>);
+template sla::QR sla::qr<double>(Matrix<double>);
+template sla::Matrix<double> sla::eig<double>(Matrix<double>, double, int);
 
 
 
 
 /*
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<float>);
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<int>);
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<float>);
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<long>);
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<short>);
-template sla::LU<float> sla::luDecomp<float>(sla::Matrix<size_t>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<double>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<int>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<float>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<long>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<short>);
+template sla::LU<double> sla::luDecomp<double>(sla::Matrix<size_t>);
 */
