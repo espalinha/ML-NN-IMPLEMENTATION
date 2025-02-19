@@ -2,6 +2,7 @@
 #define LINEARALGEBRA_HPP
 
 #include <LinearAlgebra.hpp>
+#include <cstddef>
 #include <iostream>
 #include <pthread.h>
 #include <vector>
@@ -28,6 +29,7 @@ class Matrix
     Matrix<T> getRow(int row, int col_start); //its similar: arr[row:col_start] 
     Matrix<T> underRow(int row);
     void exchRow(int row1, int row2);
+    std::vector<T> stdvector();
   public:
     Matrix(T** matrix, int row, int cols); //Constructor
     Matrix(T* matrix, int row, int cols);
@@ -127,6 +129,7 @@ float normVec(Matrix<T> A);
 template<class T>
 Matrix<float> concatenate(Matrix<T> A, Matrix<T> B);
 
+Matrix<float> linspace(float a, float b, size_t size=0);
 
 }
 

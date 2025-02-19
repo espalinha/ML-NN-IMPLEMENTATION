@@ -174,6 +174,19 @@ linalg/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/linalg.dir/build.make CMakeFiles/linalg.dir/build
 .PHONY : linalg/fast
 
+#=============================================================================
+# Target rules for targets named mllib
+
+# Build rule for target.
+mllib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mllib
+.PHONY : mllib
+
+# fast build rule for target.
+mllib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/build
+.PHONY : mllib/fast
+
 LA/src/matrix.o: LA/src/matrix.cpp.o
 .PHONY : LA/src/matrix.o
 
@@ -198,6 +211,54 @@ LA/src/matrix.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/linalg.dir/build.make CMakeFiles/linalg.dir/LA/src/matrix.cpp.s
 .PHONY : LA/src/matrix.cpp.s
 
+ML/src/LinearRegression.o: ML/src/LinearRegression.cpp.o
+.PHONY : ML/src/LinearRegression.o
+
+# target to build an object file
+ML/src/LinearRegression.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LinearRegression.cpp.o
+.PHONY : ML/src/LinearRegression.cpp.o
+
+ML/src/LinearRegression.i: ML/src/LinearRegression.cpp.i
+.PHONY : ML/src/LinearRegression.i
+
+# target to preprocess a source file
+ML/src/LinearRegression.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LinearRegression.cpp.i
+.PHONY : ML/src/LinearRegression.cpp.i
+
+ML/src/LinearRegression.s: ML/src/LinearRegression.cpp.s
+.PHONY : ML/src/LinearRegression.s
+
+# target to generate assembly for a file
+ML/src/LinearRegression.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LinearRegression.cpp.s
+.PHONY : ML/src/LinearRegression.cpp.s
+
+ML/src/LogisticRegression.o: ML/src/LogisticRegression.cpp.o
+.PHONY : ML/src/LogisticRegression.o
+
+# target to build an object file
+ML/src/LogisticRegression.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LogisticRegression.cpp.o
+.PHONY : ML/src/LogisticRegression.cpp.o
+
+ML/src/LogisticRegression.i: ML/src/LogisticRegression.cpp.i
+.PHONY : ML/src/LogisticRegression.i
+
+# target to preprocess a source file
+ML/src/LogisticRegression.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LogisticRegression.cpp.i
+.PHONY : ML/src/LogisticRegression.cpp.i
+
+ML/src/LogisticRegression.s: ML/src/LogisticRegression.cpp.s
+.PHONY : ML/src/LogisticRegression.s
+
+# target to generate assembly for a file
+ML/src/LogisticRegression.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mllib.dir/build.make CMakeFiles/mllib.dir/ML/src/LogisticRegression.cpp.s
+.PHONY : ML/src/LogisticRegression.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -211,9 +272,16 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... linalg"
+	@echo "... mllib"
 	@echo "... LA/src/matrix.o"
 	@echo "... LA/src/matrix.i"
 	@echo "... LA/src/matrix.s"
+	@echo "... ML/src/LinearRegression.o"
+	@echo "... ML/src/LinearRegression.i"
+	@echo "... ML/src/LinearRegression.s"
+	@echo "... ML/src/LogisticRegression.o"
+	@echo "... ML/src/LogisticRegression.i"
+	@echo "... ML/src/LogisticRegression.s"
 .PHONY : help
 
 

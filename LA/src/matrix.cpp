@@ -1,6 +1,7 @@
 #include "LinearAlgebra.hpp"
 #include <cfloat>
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <random>
@@ -23,6 +24,11 @@ void Matrix<T>::printMatrix()
     }
     std::cout << "\n";
   }
+}
+
+template <class T>
+std::vector<T> Matrix<T>::stdvector() {
+  return std::vector<T>(this->arrayMatrix, this->arrayMatrix + this->rows*this->cols);
 }
 
 template <class T>
@@ -937,6 +943,27 @@ Matrix<float> concatenate(Matrix<T> A, Matrix<T> B) {
   return new_matrix;
 }
 
+Matrix<float> linspace(float a, float b, size_t size) {
+  size_t size__ = 0;
+  if( size == 0 ) {
+    size__ = b - a;
+  }
+  else if (size > 0) {
+    size__ = size;
+  }
+  else {
+    throw std::invalid_argument("size must be greater zero");
+  }
+
+  float pass = (b - a)/size__;
+  Matrix<float> result = sla::zeros(size__, 1);
+  for(int i = 0; i < size__; i++) {
+    result(i) = a + pass*i;
+  }
+  return result;
+}
+
+
 
 }
 
@@ -965,6 +992,7 @@ template float sla::normVec<float>(Matrix<float>);
 template sla::QR sla::qr<float>(Matrix<float>);
 template sla::EIG sla::eig<float>(Matrix<float>, float, int);
 template sla::Matrix<float> sla::concatenate<float>(Matrix<float>, Matrix<float>);
+
 
 
 
