@@ -1,2 +1,4 @@
 /usr/local/lib/liblinalg.so
+/usr/local/lib/libmllib.so
 /usr/local/include/LinearAlgebra.hpp
+/usr/local/include/ml.hpp
